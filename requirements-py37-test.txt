@@ -1,0 +1,7 @@
+# Compatibility-test dependencies only for the existing Python 3.7.2 runtime.
+# These pins are not the supported project environment; use pyproject.toml on Python 3.11+.
+fastapi==0.103.2
+httpx==0.24.1
+pydantic==1.10.15
+pytest==7.4.4
+uvicorn==0.22.0

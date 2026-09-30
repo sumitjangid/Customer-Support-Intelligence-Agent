@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Virtual environments
+.venv/
+.venv-py37/
+venv/
+env/
+ENV/
+
+# Packaging and build artifacts
+build/
+dist/
+downloads/
+egg-info/
+*.egg-info/
+.eggs/
+*.egg
+wheels/
+
+# Test, coverage, and type-checker caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.pyre/
+.ruff_cache/
+.hypothesis/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Editors and operating system
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
