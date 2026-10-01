@@ -38,6 +38,7 @@ htmlcov/
 .env.*
 !.env.example
 .local/
+docs/interview-prep.md
 
 # Editors and operating system
 .DS_Store
