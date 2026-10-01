@@ -2,18 +2,21 @@
 
 A Python-based support-ticket assistant designed to help teams find relevant knowledge-base guidance, triage incoming tickets, prioritize urgent cases, and draft responses for human review.
 
-> **Project status:** The API foundation, validated stateless ticket intake, local knowledge ingestion, local semantic retrieval, deterministic ticket triage recommendations, and Gemini response-suggestion prototype are in place. Evaluation/security/operations work and measured performance results remain future work.
+> **Project status:** The API foundation, validated stateless ticket intake, local knowledge ingestion, local semantic retrieval, deterministic ticket triage recommendations, and Gemini response-suggestion prototype are in place. Initial synthetic evaluation and security/operations review are documented; production hardening and measured performance results remain future work.
 
 ## Documentation
 
 - [Step-by-step project plan](docs/project-plan.md) — milestones, local setup, acceptance criteria, and decisions to make.
 - [Architecture](docs/architecture.md) — target workflow, proposed module boundaries, and safety constraints.
+- [Evaluation and security](docs/evaluation-and-security.md) — synthetic evaluation workflow, metrics, privacy controls, and production gaps.
 
 ## Quick start
 
 Follow the [development guide](docs/project-plan.md#local-development-after-milestone-1) to install the package, run tests, and start the API.
 
 For the temporary Python 3.7.2 test path, see [Python 3.7 compatibility testing](docs/project-plan.md#temporary-python-37-compatibility-test).
+
+Run the offline synthetic triage benchmark with `.venv/bin/python -m support_intelligence.evaluate`.
 
 ## Ingest local knowledge files
 

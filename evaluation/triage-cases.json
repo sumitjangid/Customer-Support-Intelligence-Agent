@@ -1,0 +1,153 @@
+[
+  {
+    "id": "billing-duplicate-charge",
+    "ticket": {
+      "subject": "Duplicate invoice charge",
+      "description": "My payment was charged twice. Please review the refund.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "medium"
+    },
+    "expected_category": "billing",
+    "expected_team": "billing-support",
+    "expected_priority_band": "P3",
+    "expected_escalations": [],
+    "expected_human_review": false
+  },
+  {
+    "id": "shipping-tracking-delay",
+    "ticket": {
+      "subject": "Package tracking has not updated",
+      "description": "My delivery is late and the package has not arrived.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "medium"
+    },
+    "expected_category": "shipping",
+    "expected_team": "shipping-support",
+    "expected_priority_band": "P3",
+    "expected_escalations": [],
+    "expected_human_review": false
+  },
+  {
+    "id": "product-defective-item",
+    "ticket": {
+      "subject": "Defective product",
+      "description": "The item is broken and is not working.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "low"
+    },
+    "expected_category": "product",
+    "expected_team": "product-support",
+    "expected_priority_band": "P4",
+    "expected_escalations": [],
+    "expected_human_review": false
+  },
+  {
+    "id": "general-account-question",
+    "ticket": {
+      "subject": "Question about my profile",
+      "description": "I need help changing a display preference.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "low"
+    },
+    "expected_category": "general",
+    "expected_team": "general-support",
+    "expected_priority_band": "P4",
+    "expected_escalations": [],
+    "expected_human_review": false
+  },
+  {
+    "id": "ambiguous-billing-shipping",
+    "ticket": {
+      "subject": "Billing and shipping question",
+      "description": "I have a billing and shipping question.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "medium"
+    },
+    "expected_category": "general",
+    "expected_team": "general-support",
+    "expected_priority_band": "P3",
+    "expected_escalations": [],
+    "expected_human_review": false
+  },
+  {
+    "id": "vip-high-severity",
+    "ticket": {
+      "subject": "Delivery issue",
+      "description": "The package was not delivered.",
+      "customer_tier": "vip",
+      "account_value": "standard",
+      "issue_severity": "high"
+    },
+    "expected_category": "shipping",
+    "expected_team": "shipping-support",
+    "expected_priority_band": "P2",
+    "expected_escalations": [],
+    "expected_human_review": false
+  },
+  {
+    "id": "angry-cancel-risk",
+    "ticket": {
+      "subject": "Unacceptable service",
+      "description": "I am furious and will cancel my account.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "critical"
+    },
+    "expected_category": "general",
+    "expected_team": "general-support",
+    "expected_priority_band": "P1",
+    "expected_escalations": ["angry_tone_signal", "account_at_risk"],
+    "expected_human_review": true
+  },
+  {
+    "id": "suspected-fraud",
+    "ticket": {
+      "subject": "Unauthorized charge",
+      "description": "I did not authorize this payment.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "high"
+    },
+    "expected_category": "billing",
+    "expected_team": "billing-support",
+    "expected_priority_band": "P1",
+    "expected_escalations": ["suspected_fraud"],
+    "expected_human_review": true
+  },
+  {
+    "id": "explicit-account-risk",
+    "ticket": {
+      "subject": "Billing question",
+      "description": "I need clarification on my last invoice.",
+      "customer_tier": "standard",
+      "account_value": "standard",
+      "issue_severity": "medium",
+      "account_at_risk": true
+    },
+    "expected_category": "billing",
+    "expected_team": "billing-support",
+    "expected_priority_band": "P3",
+    "expected_escalations": ["account_at_risk"],
+    "expected_human_review": true
+  },
+  {
+    "id": "high-value-account",
+    "ticket": {
+      "subject": "Product warranty question",
+      "description": "Please explain the replacement process.",
+      "customer_tier": "standard",
+      "account_value": "high",
+      "issue_severity": "high"
+    },
+    "expected_category": "product",
+    "expected_team": "product-support",
+    "expected_priority_band": "P2",
+    "expected_escalations": [],
+    "expected_human_review": false
+  }
+]

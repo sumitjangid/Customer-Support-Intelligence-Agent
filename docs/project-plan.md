@@ -71,13 +71,14 @@ Build an API that helps support agents understand, prioritize, and respond to cu
 
 **Done when:** tests cover grounded drafts, validated citations, provider failures, and low-evidence abstention; completed with 40 passing tests and a successful live synthetic-data Gemini smoke test using structured output. The response suggestion remains a prototype and requires human approval.
 
-### 7. Evaluation, security, and operations — next
+### 7. Evaluation, security, and operations — reviewed
 
-- Build a small, privacy-safe evaluation set and establish response-quality, retrieval, latency, and escalation baselines.
-- Add structured logging without logging secrets or unnecessary customer data.
-- Review authentication, rate limiting, retention, access controls, and deployment configuration before production use.
+- Add an offline evaluator for a small synthetic triage benchmark and record exact-match category/team/priority/escalation/human-review metrics.
+- Add synthetic retrieval and draft-review cases plus a manual protocol for retrieval relevance, citation support, abstention, and prompt-injection resistance.
+- Document current security controls and gaps, including secret/index handling, external Gemini data flow, no-auth local-only constraint, and production requirements.
+- Keep request-body logging disabled; define privacy-safe operational metrics and a baseline methodology before reporting business improvements.
 
-**Done when:** evaluation results are reproducible, operational behavior is observable, and production risks are reviewed.
+**Done when:** the offline benchmark is reproducible, evaluation limitations are explicit, and a security/operations review identifies both existing controls and production blockers. Completed with 10/10 synthetic triage fixtures passing and 48 automated tests passing. This milestone documents the prototype review; it does not make the API production-ready or verify business-impact targets.
 
 ## Local development (after milestone 1)
 

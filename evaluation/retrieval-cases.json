@@ -1,0 +1,23 @@
+[
+  {
+    "id": "return-window",
+    "query": "How long after delivery can I ask for a return?",
+    "expected_sources": ["returns.md"]
+  },
+  {
+    "id": "refund-timing",
+    "query": "When should I expect money back after returning an item?",
+    "expected_sources": ["returns.md"]
+  },
+  {
+    "id": "damaged-delivery",
+    "query": "What should I do if the product arrived damaged?",
+    "expected_sources": ["returns.md"]
+  },
+  {
+    "id": "unsupported-warranty-question",
+    "query": "Does the warranty cover accidental damage after two years?",
+    "expected_sources": [],
+    "expected_behavior": "abstain_or_request_human_review"
+  }
+]
