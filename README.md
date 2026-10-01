@@ -2,7 +2,7 @@
 
 A Python-based support-ticket assistant designed to help teams find relevant knowledge-base guidance, triage incoming tickets, prioritize urgent cases, and draft responses for human review.
 
-> **Project status:** The API foundation and validated, stateless ticket-intake endpoint are in place. Knowledge-base ingestion is the next milestone; persistence, RAG, ticket analysis, Claude integration, and measured performance results are future work.
+> **Project status:** The API foundation, validated stateless ticket intake, and local knowledge-base ingestion are in place. Persistence, retrieval, ticket analysis, Claude integration, and measured performance results are future work.
 
 ## Documentation
 
@@ -14,6 +14,10 @@ A Python-based support-ticket assistant designed to help teams find relevant kno
 Follow the [development guide](docs/project-plan.md#local-development-after-milestone-1) to install the package, run tests, and start the API.
 
 For the temporary Python 3.7.2 test path, see [Python 3.7 compatibility testing](docs/project-plan.md#temporary-python-37-compatibility-test).
+
+## Ingest local knowledge files
+
+Place UTF-8 Markdown (`.md`) or plain-text (`.txt`) files under `knowledge_base/`. To preview the ingestion summary, run `PYTHONPATH=src python -m support_intelligence.ingest knowledge_base`. The reader returns deterministic chunks with source metadata; it does not persist content or generate embeddings.
 
 ## Goals
 

@@ -25,15 +25,17 @@ Build an API that helps support agents understand, prioritize, and respond to cu
 
 **Done when:** API inputs are validated, documented by OpenAPI, and covered by tests. The current endpoint does not persist ticket contents.
 
-### 3. Knowledge base ingestion — next
+### 3. Knowledge base ingestion — complete
 
-- Choose supported document formats and an ingestion contract.
-- Normalize, split, and track source documents with stable identifiers and metadata.
-- Add tests for parsing, chunking, and malformed or empty documents.
+- Read local UTF-8 Markdown (`.md`) and plain-text (`.txt`) files recursively from `knowledge_base/`.
+- Normalize line endings, split content into deterministic overlapping chunks, and attach source path, content hash, and stable IDs.
+- Ignore empty documents and unsupported extensions; report invalid UTF-8 as an actionable ingestion error.
+- Keep ingestion local and stateless: no database, embeddings, vector store, or provider calls in this milestone.
+- Add tests for parsing, chunking, metadata, repeatability, invalid documents, and settings.
 
-**Done when:** sample FAQ/KB documents can be ingested repeatably and their provenance is retained.
+**Done when:** sample FAQ/KB documents can be ingested repeatably and their provenance is retained. The CLI prints a summary; it does not persist generated chunks. Validated with 14 passing tests and a CLI smoke test against `knowledge_base/returns.md`.
 
-### 4. Retrieval (RAG)
+### 4. Retrieval (RAG) — next
 
 - Select an embedding model and vector store based on data size, privacy, and deployment constraints.
 - Retrieve relevant passages for a ticket and return source references with each result.
@@ -76,6 +78,10 @@ Use Python 3.11 or newer.
 5. Run the tests with the same environment: `python -m pytest`.
 6. Start the API with the same environment: `python -m uvicorn support_intelligence.api:app --reload --app-dir src`.
 7. Open `http://127.0.0.1:8000/docs` for the interactive API docs; check `http://127.0.0.1:8000/health` for health status.
+
+### Ingest local knowledge files
+
+Add UTF-8 `.md` or `.txt` files under `knowledge_base/`, then run `PYTHONPATH=src python -m support_intelligence.ingest knowledge_base` from the repository root. Optionally set `--chunk-size` and `--overlap`; overlap must be smaller than chunk size. The command reports how many supported documents and chunks were found. At this stage, chunk text is returned by the Python ingestion function but is not written to disk or indexed.
 
 ### Troubleshooting Python and pip
 
