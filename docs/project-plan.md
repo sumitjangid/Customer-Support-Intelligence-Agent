@@ -46,23 +46,32 @@ Build an API that helps support agents understand, prioritize, and respond to cu
 
 **Done when:** retrieval returns relevant, traceable passages and fails safely when evidence is insufficient. Validated with 21 passing tests on Python 3.11, one successful live Gemini Embedding 2 request (dummy text only), and a local semantic-search smoke test returning the matching `returns.md` passages with source path, chunk index, and cosine score.
 
-### 5. Classification, routing, priority, and escalation — next
+### 5. Classification, routing, priority, and escalation — complete
 
-- Define configurable categories, routing destinations, and explicit escalation rules.
-- Produce structured classification and priority recommendations with concise rationales.
-- Treat account value, customer tier, and fraud/risk signals as inputs requiring policy review—not as a substitute for it.
+- Add a stateless `POST /tickets/triage` endpoint with validated, bounded inputs.
+- Start with transparent keyword rules for billing, shipping, product, and general categories and configurable team destinations.
+- Score priority from explicit severity, customer tier, account-value band, and escalation signals; return factor-by-factor rationale.
+- Flag possible angry tone, account risk, and fraud indicators; these are heuristics, not verified findings or autonomous decisions.
+- Require human review for P1 and any escalation flag; do not execute routing or customer actions.
+- Keep personally identifying/account details out of the prototype triage fields and add tests for ambiguous and invalid inputs.
+- Provide `POST /tickets/process` to accept ticket content and triage signals once, then return triage and a response draft/abstention together. It remains stateless; its generated ticket ID is only a correlation ID.
+- Map missing local index and Gemini provider/rate-limit failures to explicit API errors rather than crashing the application.
 
-**Done when:** representative tickets yield schema-valid recommendations, with tests for edge cases and escalation signals.
+**Done when:** representative tickets yield schema-valid, explainable recommendations, with tests for categories, routing, priority boundaries, escalation signals, ambiguity, and validation. Completed with 30 passing tests on Python 3.11. The ruleset remains a prototype to tune against an approved evaluation set.
 
-### 6. Claude response suggestions
+### 6. Gemini response suggestions — complete
 
-- Add Anthropic through the LangChain integration after configuration and secret handling are in place.
-- Ground drafts in retrieved evidence, include source references, and explicitly allow abstention when evidence is missing.
-- Require a human to review and approve a draft; do not send replies automatically.
+- Use the existing Gemini API key and Google GenAI SDK for structured response generation; do not add or expose another provider secret.
+- Retrieve source chunks from the local vector index and send only the synthetic ticket subject/description plus retrieved dummy/public passages to Gemini.
+- Use structured JSON output with citations restricted to retrieved chunk IDs; resolve citations to source paths in application code.
+- Abstain without calling the generator when no sufficiently relevant evidence is found; also support model-directed abstention.
+- Treat ticket/KB contents as untrusted data and ignore embedded instructions. Do not invent policy or claim a reply/action was sent.
+- Return a draft and its sources for human approval only; no sending endpoint or autonomous response action.
+- Mock model and embedder in tests. Gemini's free-tier availability, quota and data terms can change.
 
-**Done when:** integration tests (mocked by default) cover success, malformed model output, timeouts, and low-evidence cases.
+**Done when:** tests cover grounded drafts, validated citations, provider failures, and low-evidence abstention; completed with 40 passing tests and a successful live synthetic-data Gemini smoke test using structured output. The response suggestion remains a prototype and requires human approval.
 
-### 7. Evaluation, security, and operations
+### 7. Evaluation, security, and operations — next
 
 - Build a small, privacy-safe evaluation set and establish response-quality, retrieval, latency, and escalation baselines.
 - Add structured logging without logging secrets or unnecessary customer data.
@@ -96,7 +105,11 @@ This optional experiment uses an external API only for embeddings; vector search
 4. Search: `python -m support_intelligence.retrieve search "When can I return an item?"`.
 5. The ignored `.local/knowledge-index.json` stores both vectors and chunk text. Keep it local; it is excluded from Git.
 
-Gemini's free tier has limits and data terms that can change. Current pricing says free-tier content may be used to improve Google products. Confirm current terms and use only dummy/public content for this experiment. This experiment only creates embeddings; it does not generate customer-facing replies and does not replace the planned Anthropic Claude integration.
+Gemini's free tier has limits and data terms that can change. Current pricing says free-tier content may be used to improve Google products. Confirm current terms and use only dummy/public content. This embedding experiment is the retrieval stage; response drafting is handled separately in the response-suggestion milestone below.
+
+### Gemini response-suggestion prototype
+
+The `POST /tickets/suggest-response` endpoint queries the local index, filters weak matches, then uses Gemini structured output to draft an evidence-based reply. The generation request contains the synthetic ticket subject/description and retrieved evidence text; the customer reference is not sent. Citation IDs are checked against retrieved chunks and mapped to source paths locally. If retrieval is weak, the endpoint abstains without calling Gemini. Every draft is explicitly marked for human review and is never sent. Use the endpoint in `/docs` or submit a synthetic ticket with the existing API test client. Free-tier terms can allow prompt retention and use for service improvement, so never submit real support/customer information.
 
 ### Troubleshooting Python and pip
 

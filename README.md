@@ -2,7 +2,7 @@
 
 A Python-based support-ticket assistant designed to help teams find relevant knowledge-base guidance, triage incoming tickets, prioritize urgent cases, and draft responses for human review.
 
-> **Project status:** The API foundation, validated stateless ticket intake, local knowledge ingestion, and local semantic retrieval prototype with optional Gemini embeddings are in place. Ticket persistence, ticket analysis, Claude integration, and measured performance results are future work.
+> **Project status:** The API foundation, validated stateless ticket intake, local knowledge ingestion, local semantic retrieval, deterministic ticket triage recommendations, and Gemini response-suggestion prototype are in place. Evaluation/security/operations work and measured performance results remain future work.
 
 ## Documentation
 
@@ -22,6 +22,18 @@ Place UTF-8 Markdown (`.md`) or plain-text (`.txt`) files under `knowledge_base/
 ## Semantic retrieval prototype
 
 The retrieval experiment sends only the synthetic/public KB text and search query to Google's Gemini Embedding API; chunk text and vectors are stored in an ignored local `.local/knowledge-index.json` file. Install the optional provider and test dependencies with `python -m pip install -e '.[dev,gemini]'`, copy `.env.example` to `.env`, and add a Google AI Studio API key there. Build an index with `python -m support_intelligence.retrieve index`, then search it with `python -m support_intelligence.retrieve search "When can I return an item?"`. The local index does not require a hosted vector database. Gemini free-tier availability, quotas, model availability, and data terms can change; do not use confidential or real customer data with this prototype.
+
+## Ticket triage prototype
+
+The stateless `POST /tickets/triage` endpoint uses transparent keyword rules to recommend a category/team and an urgency score from severity and explicit customer/account bands. It reports matching terms and score factors. Text-based anger, account-risk, and fraud signals are heuristics that can be wrong; they only request human review. The endpoint never routes a ticket or takes a customer-facing action.
+
+## Gemini response suggestion prototype
+
+After creating the local index, open `http://127.0.0.1:8000/docs` and try `POST /tickets/suggest-response` with the sample returns FAQ and synthetic ticket text. The service returns a draft with verified local source references, or abstains if retrieval has insufficient evidence. All drafts require human review and are never sent. The Gemini request includes ticket subject/description and retrieved chunk text, but excludes the customer reference. Free-tier data handling and quotas may change; use dummy/public content only.
+
+## Combined ticket workflow
+
+Use `POST /tickets/process` to submit the ticket once and receive both the triage recommendation and response suggestion (draft or abstention). The request accepts the same triage fields as `/tickets/triage`; the response includes a generated correlation ID and processing timestamp. The endpoint remains stateless: the ID cannot be used to fetch a stored ticket, and no draft is sent. Try it in `http://127.0.0.1:8000/docs` with the synthetic return question. If the local index is missing, it returns 503; Gemini provider failures or rate limits are reported as a gateway error, so wait and retry later.
 
 ## Goals
 
@@ -45,8 +57,8 @@ The retrieval experiment sends only the synthetic/public KB text and search quer
 - Python
 - FastAPI
 - Pydantic
-- Anthropic Claude
-- LangChain
+- Gemini API (prototype embeddings and response generation)
+- Anthropic Claude / LangChain (future provider options to evaluate)
 
 Specific model, vector store, persistence layer, and deployment choices will be documented as they are selected during implementation.
 
@@ -57,7 +69,7 @@ Specific model, vector store, persistence layer, and deployment choices will be 
 3. Knowledge-base ingestion and source tracking.
 4. Retrieval and relevance evaluation.
 5. Classification, routing, priority, and escalation recommendations.
-6. Claude response suggestions with human approval.
+6. Gemini response suggestions with human approval (prototype provider; evaluate provider choice before production).
 7. Evaluation, security, and operational readiness.
 
 See the [step-by-step project plan](docs/project-plan.md) for acceptance criteria for each milestone.
