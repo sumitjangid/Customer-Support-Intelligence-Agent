@@ -2,7 +2,7 @@
 
 ## Current scope
 
-The API foundation includes a health check and a validated `POST /tickets` endpoint. Ticket submissions are acknowledged with a generated ID and timestamp, but the current endpoint does not persist ticket text or trigger processing. A local knowledge-ingestion module reads UTF-8 Markdown and plain-text files, normalizes and chunks them, and retains source metadata in memory. It does not write chunks to disk, create embeddings, or call a model. Durable storage, retrieval, and model calls remain future milestones and must not be implied by the current API.
+The API foundation includes a health check and a validated `POST /tickets` endpoint. Ticket submissions are acknowledged with a generated ID and timestamp, but the current endpoint does not persist ticket text or trigger processing. A local knowledge-ingestion module reads UTF-8 Markdown and plain-text files, normalizes and chunks them, and retains source metadata in memory. The retrieval prototype can optionally send dummy/public chunk text and queries to Gemini Embedding 2, then stores chunk text and vectors in a local JSON index ignored by Git. The API key is read from local environment configuration. No hosted vector database is used, and the endpoint does not yet orchestrate ticket analysis or response generation.
 
 ## Target request flow
 

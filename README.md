@@ -2,7 +2,7 @@
 
 A Python-based support-ticket assistant designed to help teams find relevant knowledge-base guidance, triage incoming tickets, prioritize urgent cases, and draft responses for human review.
 
-> **Project status:** The API foundation, validated stateless ticket intake, and local knowledge-base ingestion are in place. Persistence, retrieval, ticket analysis, Claude integration, and measured performance results are future work.
+> **Project status:** The API foundation, validated stateless ticket intake, local knowledge ingestion, and local semantic retrieval prototype with optional Gemini embeddings are in place. Ticket persistence, ticket analysis, Claude integration, and measured performance results are future work.
 
 ## Documentation
 
@@ -18,6 +18,10 @@ For the temporary Python 3.7.2 test path, see [Python 3.7 compatibility testing]
 ## Ingest local knowledge files
 
 Place UTF-8 Markdown (`.md`) or plain-text (`.txt`) files under `knowledge_base/`. To preview the ingestion summary, run `PYTHONPATH=src python -m support_intelligence.ingest knowledge_base`. The reader returns deterministic chunks with source metadata; it does not persist content or generate embeddings.
+
+## Semantic retrieval prototype
+
+The retrieval experiment sends only the synthetic/public KB text and search query to Google's Gemini Embedding API; chunk text and vectors are stored in an ignored local `.local/knowledge-index.json` file. Install the optional provider and test dependencies with `python -m pip install -e '.[dev,gemini]'`, copy `.env.example` to `.env`, and add a Google AI Studio API key there. Build an index with `python -m support_intelligence.retrieve index`, then search it with `python -m support_intelligence.retrieve search "When can I return an item?"`. The local index does not require a hosted vector database. Gemini free-tier availability, quotas, model availability, and data terms can change; do not use confidential or real customer data with this prototype.
 
 ## Goals
 
